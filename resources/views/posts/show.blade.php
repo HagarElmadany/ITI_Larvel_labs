@@ -10,11 +10,11 @@
                </div>
                <div class="px-4 py-4">
                    <div class="mb-2">
-                       <h3 class="text-lg font-medium text-gray-800">Title :- <span class="font-normal">{{$post['title']}}</span></h3>
+                       <h3 class="text-lg font-medium text-gray-800">Title :- <span class="font-normal">{{$post->title}}</span></h3>
                    </div>
                    <div>
                        <h3 class="text-lg font-medium text-gray-800">Description :-</h3>
-                       <p class="text-gray-600">{{$post['description']}}</p>
+                       <p class="text-gray-600">{{$post->description}}</p>
                    </div>
                </div>
            </div>
@@ -27,16 +27,38 @@
                </div>
                <div class="px-4 py-4">
                    <div class="mb-2">
-                       <h3 class="text-lg font-medium text-gray-800">Name :- <span class="font-normal">{{$post['posted_by']['name']}}</span></h3>
+                       <h3 class="text-lg font-medium text-gray-800">Name :- <span class="font-normal">{{ $post->user ? $post->user->name : 'No User Found' }}</span></h3>
                    </div>
                    <div class="mb-2">
-                       <h3 class="text-lg font-medium text-gray-800">Email :- <span class="font-normal">{{$post['posted_by']['email']}}</span></h3>
+                       <h3 class="text-lg font-medium text-gray-800">Email :- <span class="font-normal">{{ $post->user ? $post->user->email : 'No User Found' }}</span></h3>
                    </div>
                    <div>
-                       <h3 class="text-lg font-medium text-gray-800">Created At :- <span class="font-normal">{{$post['posted_by']['created_at']}}</span></h3>
+                       <h3 class="text-lg font-medium text-gray-800">Created At :- <span class="font-normal"><p>Created At :- {{ \Carbon\Carbon::parse($post->created_at)->translatedFormat('l jS \of F Y h:i:s A') }}</p>
+                       </span></h3>
                    </div>
                </div>
            </div>
+
+           <!-- comments-->
+            <div class="mt-6">
+                <h2 class="text-lg font-semibold">Comments:</h2>
+                @foreach($post->comments as $comment)
+                    <div class="border p-3 my-2 rounded">
+                        <p>{{ $comment->content }}</p>
+                        <form action="{{ route('comments.destroy', $comment->id) }}" method="POST" class="inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded mt-2">Delete</button>
+                        </form>
+                    </div>
+                @endforeach
+            </div>
+            <!-- Add comment-->
+            <form action="{{ route('comments.store', $post->id) }}" method="POST" class="mt-4">
+                @csrf
+                <textarea name="content" class="border p-2 w-full" placeholder="Add a comment..." required></textarea>
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded mt-2">Submit</button>
+            </form>
 
 
            <!-- Back Button -->

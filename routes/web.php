@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostsController;
+use App\Http\Controllers\CommentController;
 
 
 /*
@@ -35,3 +36,9 @@ Route::delete('/posts/{id}', [PostsController::class, 'destroy'])->name('posts.d
 Route::get('/posts/{post}/edit', [PostsController::class, 'edit'])->name('posts.edit');
 
 Route::put('/posts/{post}', [PostsController::class, 'update'])->name('posts.update');
+
+
+
+Route::post('/posts/{post}/comments', [CommentController::class, 'store'])->name('comments.store');
+Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+

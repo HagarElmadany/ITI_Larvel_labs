@@ -29,8 +29,13 @@
                 </div>
                 <div class="grid grid-cols-1 gap-4 text-center sm:grid-cols-3">
                     <select name="posted_by" id="" class="border border-gray-200 rounded p-2">
-                        <option value="hagar" @if ($post['posted_by'] === 'hagar') selected @endif>hagar</option>
-                        <option value="lina" @if ($post['posted_by'] === 'lina') selected @endif>lina</option>
+                        {{-- <option value="hagar" @if ($post['posted_by'] === 'hagar') selected @endif>hagar</option>
+                        <option value="lina" @if ($post['posted_by'] === 'lina') selected @endif>lina</option> --}}
+                        @foreach ($users as $user)
+                        <option value="{{ $user->id }}" @if ($post->posted_by == $user->id) selected @endif>
+                            {{ $user->name }}
+                        </option>                        
+                        @endforeach
                     </select>
                 </div>
                 
