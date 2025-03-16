@@ -27,7 +27,7 @@ Route::middleware(['auth'])->get('/posts/create', [PostsController::class, 'crea
 
 Route::middleware(['auth'])->post('/posts', [PostsController::class, 'store'])->name('posts.store');
 
-Route::middleware(['auth'])->get('/posts/{post}', [PostsController::class, 'show'])->name('posts.show');
+Route::middleware(['auth'])->get('/posts/{identifier}', [PostsController::class, 'show'])->name('posts.show');
 
 
 Route::middleware(['auth'])->delete('/posts/{id}', [PostsController::class, 'destroy'])->name('posts.destroy');

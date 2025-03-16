@@ -18,6 +18,7 @@
                     <tr>
                         <th class="px-4 py-2 font-medium whitespace-nowrap text-gray-900">ID</th>
                         <th class="px-4 py-2 font-medium whitespace-nowrap text-gray-900">Title</th>
+                        <th class="px-4 py-2 font-medium whitespace-nowrap text-gray-900">Slug</th>
                         <th class="px-4 py-2 font-medium whitespace-nowrap text-gray-900">Posted By</th>
                         <th class="px-4 py-2 font-medium whitespace-nowrap text-gray-900">Created At</th>
                         <th class="px-4 py-2 font-medium whitespace-nowrap text-gray-900">Actions</th>
@@ -29,6 +30,7 @@
                     <tr>
                         <td class="px-4 py-2 font-medium whitespace-nowrap text-gray-900">{{ $post->id }}</td>
                         <td class="px-4 py-2 whitespace-nowrap text-gray-700">{{ $post->title }}</td>
+                        <td class="px-4 py-2 whitespace-nowrap text-gray-700">{{ $post->slug }}</td>
                         <td class="px-4 py-2 whitespace-nowrap text-gray-700">{{ $post->user ? $post->user->name : 'No User Found' }}</td>
                         <td class="px-4 py-2 whitespace-nowrap text-gray-700">{{ \Carbon\Carbon::parse($post->created_at)->format('Y-m-d') }}
                         </td>

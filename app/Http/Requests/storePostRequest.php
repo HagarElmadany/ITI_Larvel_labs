@@ -21,12 +21,13 @@ class storePostRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             //
             'title' => ['required', 'min:3'],     //at least 3 chars
             'description' => ['required', 'min:5'], 
+            'post_creator' => ['required', 'exists:users,id'],
         ];
     }
 

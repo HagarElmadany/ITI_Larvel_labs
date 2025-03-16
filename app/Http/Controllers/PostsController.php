@@ -28,10 +28,17 @@ class PostsController extends Controller
         return view('posts.index',['posts' => $posts]);
     }
 
-    public function show($id)
+    public function show($identifier)
     {
+        // identifier => id or slug
+        $post = Post::where('slug', $identifier)->first();
+
+        if (!$post) {
+            $post = Post::findOrFail($identifier);
+        }
         //SELECT * FROM posts where id = 1 limit 1;
-        $post = Post::find($id);
+        //$post = Post::find($id);
+       
 
         // $post = [
         //     'id' => 1, 
@@ -52,7 +59,13 @@ class PostsController extends Controller
         return view('posts.create', ['users' =>$users]);
     }
 
-    public function store(StorePostRequest $request) {  
+    public function store(StorePostRequest $request) { 
+        $post = Post::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'user_id' => $request->post_creator,
+        ]);
+        
         //validition      //move this code to storePostRequest.php
     
         // request()->validate([
@@ -63,15 +76,16 @@ class PostsController extends Controller
         //     'title.min' => 'override of min:3 chars',    //override the default message
         // ]);       
 
-        $title = request()->title;
-        $description = request()->description;
-        $postCreator = request()->post_creator;
+        // $title = request()->title;
+        // $description = request()->description;
+        // $postCreator = request()->post_creator;
 
-        $post = Post::create([
-            'title' => $title,
-            'description' => $description,
-            'user_id' => $postCreator,
-        ]);
+        // $post = Post::create([
+        //     'title' => $title,
+        //     'description' => $description,
+        //     'user_id' => $postCreator,
+        // ]);
+
         return to_route('posts.index', $post->id);
     }
 
