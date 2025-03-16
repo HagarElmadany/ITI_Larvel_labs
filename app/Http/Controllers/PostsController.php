@@ -52,6 +52,16 @@ class PostsController extends Controller
     }
 
     public function store() {  
+        //validition
+    
+        request()->validate([
+            'title' => ['required', 'min:3'],     //at least 3 chars
+            'description' => ['required', 'min:5'],   
+        ],[
+            'title.required' => 'My Custom Message For Required',    
+            'title.min' => 'override of min:3 chars',    //override the default message
+        ]);
+
         $title = request()->title;
         $description = request()->description;
         $postCreator = request()->post_creator;
