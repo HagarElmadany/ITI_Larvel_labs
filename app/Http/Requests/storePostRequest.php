@@ -24,11 +24,13 @@ class storePostRequest extends FormRequest
     public function rules(): array
     {
         // dd($this->all());
+       
         return [
             //
             'title' => ['required', 'min:3'],     //at least 3 chars
-            'description' => ['required', 'min:5'], 
+            'description' => ['required', 'min:10'], 
             'post_creator' => ['required', 'exists:users,id'],
+            'post_creator' => ['required','exists:users,id' ], // sure user in database
             'image' => ['nullable', 'image', 'mimes:jpg,png', 'max:2048'],  //extensions are only(.jpg, .png)
         ];
     }

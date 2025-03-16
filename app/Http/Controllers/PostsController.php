@@ -6,9 +6,11 @@ use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\User;
 use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use Illuminate\Support\Facades\Storage;  // image
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+
 
 
 
@@ -150,14 +152,14 @@ class PostsController extends Controller
     }
 
     //update
-    public function update(Request $request,$id) {  
+    public function update(UpdatePostRequest $request,$id) {  
         $post = Post::findOrFail($id); 
 
 
         $updateData = [
             'title' => $request->title,
             'description' => $request->description,
-            // 'user_id' => $request->post_creator, 
+            'user_id' => $request->post_creator, 
             'slug' => Str::slug($request->title),
             'updated_at' => now(),
         ];
