@@ -6,6 +6,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Inertia\Inertia;
+use App\Http\Middleware\AdminsOnly;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +19,8 @@ use Inertia\Inertia;
 |
 */
 
-Route::middleware(['auth'])->get('/posts', [PostsController::class, 'index'])->name('posts.index');
+    //middleware(['auth', AdminsOnly::class])->
+Route::middleware(['auth', 'admins-only'])->get('/posts', [PostsController::class, 'index'])->name('posts.index');
 
 
 Route::middleware(['auth'])->get('/posts/create', [PostsController::class, 'create'])->name('posts.create');

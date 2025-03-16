@@ -13,6 +13,9 @@ class Kernel extends HttpKernel
      *
      * @var array<int, class-string|string>
      */
+
+     
+    
     protected $middleware = [
         // \App\Http\Middleware\TrustHosts::class,
         \App\Http\Middleware\TrustProxies::class,
@@ -37,6 +40,10 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\HandleInertiaRequests::class,
+            \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
+
+            //add TestGlobal middleware to the web middleware group
+            \App\Http\Middleware\HandleInertiaRequests::class,  
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
         ],
 
@@ -65,5 +72,8 @@ class Kernel extends HttpKernel
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'admins-only' => \App\Http\Middleware\AdminsOnly::class, //add alias for AdminsOnly middleware
     ];
+
+   
 }
