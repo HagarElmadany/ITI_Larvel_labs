@@ -2,7 +2,7 @@
     <section class="bg-gray-100">
         <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
             <div class="rounded-lg bg-white p-8 shadow-lg lg:col-span-3 lg:p-12">
-              <form action="/posts/{{$post['id']}}" method="POST" class="space-y-4">
+              <form action="{{ route('posts.update', $post->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div>
@@ -38,6 +38,16 @@
                         @endforeach
                     </select>
                 </div>
+
+                {{-- edit image --}}
+                <div class="form-group">
+                  <label>current image</label><br>
+                  @if ($post->image)
+                    <img src="{{ asset('storage/posts/' . basename($post->image)) }}" alt="Post Image"width="200"><br>
+                  @endif
+                  <label>upload new image </label>
+                  <input type="file" name="image" class="form-control">
+              </div>
                 
                 <div class="mt-4">
                   <button

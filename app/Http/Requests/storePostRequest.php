@@ -23,11 +23,13 @@ class storePostRequest extends FormRequest
      */
     public function rules(): array
     {
+        // dd($this->all());
         return [
             //
             'title' => ['required', 'min:3'],     //at least 3 chars
             'description' => ['required', 'min:5'], 
             'post_creator' => ['required', 'exists:users,id'],
+            'image' => ['nullable', 'image', 'mimes:jpg,png', 'max:2048'],  //extensions are only(.jpg, .png)
         ];
     }
 
@@ -36,6 +38,9 @@ class storePostRequest extends FormRequest
         return [
             'title.required' => 'Override title required',
             'description.required' => 'Override description required',
+            'image.image' => 'The image must be a valid image file.',
+            'image.mimes' => 'The image must be a file of type: jpg, png.',
+            'image.max' => 'The image size must not exceed 2MB.',
         ];
     }
 }

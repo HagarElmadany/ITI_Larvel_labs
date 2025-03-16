@@ -16,6 +16,14 @@
                        <h3 class="text-lg font-medium text-gray-800">Description :-</h3>
                        <p class="text-gray-600">{{$post->description}}</p>
                    </div>
+                   <!-- Add Post Image -->
+                   @if ($post->image)
+                   {{-- <p>{{ asset('storage/posts/' . basename($post->image)) }}</p> --}}
+                   <img src="{{ asset('storage/posts/' . basename($post->image)) }}" alt="Post Image">
+                   @else
+                   <p>No image available</p>
+                    @endif
+
                </div>
            </div>
 

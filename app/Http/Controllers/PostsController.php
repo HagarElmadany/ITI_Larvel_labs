@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\User;
 use App\Http\Requests\StorePostRequest;
+use Illuminate\Support\Facades\Storage;  // image
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+
+
 
 class PostsController extends Controller
 {
@@ -60,11 +65,41 @@ class PostsController extends Controller
     }
 
     public function store(StorePostRequest $request) { 
-        $post = Post::create([
+        // dd($_FILES);
+        // // dd($request->file('image'));
+        // dd($request->all());
+        //upload and save image
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('posts', 'public');
+            
+        } else {
+            $imagePath = null;
+        }
+        
+        // dd([
+        //     'title' => $request->title,
+        //     'description' => $request->description,
+        //     'user_id' => $request->post_creator,
+        //     'image' => $imagePath,
+        // ]);
+
+        // $post = Post::create([
+        //     'title' => $request->title,
+        //     'description' => $request->description,
+        //     'user_id' => $request->post_creator,
+        //     'image' => $imagePath,
+        // ]);
+
+        $postId = DB::table('posts')->insert([
             'title' => $request->title,
             'description' => $request->description,
             'user_id' => $request->post_creator,
+            'image' => $imagePath,
+            'slug' => Str::slug($request->title), 
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
+        
         
         //validition      //move this code to storePostRequest.php
     
@@ -86,12 +121,19 @@ class PostsController extends Controller
         //     'user_id' => $postCreator,
         // ]);
 
-        return to_route('posts.index', $post->id);
+        return to_route('posts.index',  $postId);
     }
 
+    //delete
     public function destroy($id)
     {
         $singlePost = Post::findOrFail($id);
+
+        // when delete post=> delete image from storage
+        if ($singlePost->image) {
+            Storage::disk('public')->delete($singlePost->image);
+        }
+
         $singlePost->delete();
 
         // dd($id); 
@@ -110,13 +152,31 @@ class PostsController extends Controller
     //update
     public function update(Request $request,$id) {  
         $post = Post::findOrFail($id); 
-        $post->update([
-            'title' => $request->input('title'),
-            'description' => $request->input('description'),
-            'posted_by' => $request->input('posted_by'),
-            // 'user_id' => $request->input('postCreator'),
 
-        ]);
+
+        $updateData = [
+            'title' => $request->title,
+            'description' => $request->description,
+            // 'user_id' => $request->post_creator, 
+            'slug' => Str::slug($request->title),
+            'updated_at' => now(),
+        ];
+    
+        
+        if ($request->hasFile('image')) {
+            //delete old
+            if ($post->image) {
+                Storage::disk('public')->delete($post->image);
+            }
+            // new image
+            $imagePath = $request->file('image')->store('posts', 'public');
+            $updateData['image'] = $imagePath;
+        }
+    
+        // update image in database
+        DB::table('posts')->where('id', $id)->update($updateData);
+
+    
         return to_route('posts.index');
     }
 

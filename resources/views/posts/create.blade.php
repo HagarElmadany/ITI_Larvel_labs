@@ -19,7 +19,7 @@
             </div>
 
             <div class="px-6 py-4">
-                <form method="POST" action="/posts">
+                <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <!-- Title Input -->
                     <div class="mb-4">
@@ -42,7 +42,13 @@
                             class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 py-2 px-3 border"
                         ></textarea>
                     </div>
-                    
+
+                    {{-- upload image input --}}
+                    <div class="mb-4">
+                    <label for="image" class="block text-sm font-medium text-gray-700 mb-1">Upload Image:</label>
+                    <input type="file" name="image" accept="image/*"  class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 py-2 px-3 border">
+                    <div class="mb-4">
+
                     <!-- Post Creator Select -->
                     <div class="mb-6">
                         <label for="creator" class="block text-sm font-medium text-gray-700 mb-1">Post Creator</label>
@@ -68,6 +74,7 @@
                             Submit
                         </button>
                     </div>
+                    {{-- <pre>{{ var_dump($_FILES) }}</pre> --}}
                 </form>
             </div>
         </div>

@@ -5,11 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Support\Facades\Storage;
 
 class post extends Model
 {
     use HasFactory, Sluggable;
-    protected $fillable = ['title', 'description','user_id', 'slug']; 
+    protected $fillable = ['title', 'description','user_id', 'slug','image']; 
 
     public function user()
     {
@@ -35,6 +36,21 @@ class post extends Model
                 'source' => 'title'
             ]
         ];
+    }
+
+
+    
+    public function setImageAttribute($value)
+    {
+        if ($value) {
+            $this->attributes['image'] = Storage::disk('public')->put('posts', $value);
+        }
+    }
+
+        
+    public function getImageAttribute($value) 
+    {
+        return $value ? Storage::url($value) : null;
     }
 }
 
