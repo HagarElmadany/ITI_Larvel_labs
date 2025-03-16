@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\User;
+use App\Http\Requests\StorePostRequest;
 
 class PostsController extends Controller
 {
@@ -51,16 +52,16 @@ class PostsController extends Controller
         return view('posts.create', ['users' =>$users]);
     }
 
-    public function store() {  
-        //validition
+    public function store(StorePostRequest $request) {  
+        //validition      //move this code to storePostRequest.php
     
-        request()->validate([
-            'title' => ['required', 'min:3'],     //at least 3 chars
-            'description' => ['required', 'min:5'],   
-        ],[
-            'title.required' => 'My Custom Message For Required',    
-            'title.min' => 'override of min:3 chars',    //override the default message
-        ]);
+        // request()->validate([
+        //     'title' => ['required', 'min:3'],     //at least 3 chars
+        //     'description' => ['required', 'min:5'],   
+        // ],[
+        //     'title.required' => 'My Custom Message For Required',    
+        //     'title.min' => 'override of min:3 chars',    //override the default message
+        // ]);       
 
         $title = request()->title;
         $description = request()->description;
