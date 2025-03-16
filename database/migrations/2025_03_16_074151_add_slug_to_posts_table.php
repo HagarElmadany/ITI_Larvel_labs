@@ -14,7 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table->string('slug')->unique();
+            if (!Schema::hasColumn('posts', 'slug')) {
+                $table->string('slug')->unique()->nullable();
+            }
         });
     }
 
